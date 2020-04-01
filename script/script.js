@@ -20,8 +20,11 @@ switch(lang){
 
 //array
 
-let daysOnRuAndEn = {"ru":daysOnRu,"en":daysOnEn};
-console.log(daysOnRuAndEn[lang]);
+let daysOnRuAndEn =new Map([
+    ["ru",daysOnRu],
+    ["en",daysOnEn]
+]);
+console.log(daysOnRuAndEn.get(lang));
 
 //2
 let namePerson = prompt("Write your name");
