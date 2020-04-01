@@ -1,45 +1,65 @@
 'use strict';
+
+//data
 let money, income, addExpenses, deposit, mission, period;
 
-money = 1200;
+money = +prompt("Ваш месячный доход?");
 income = 'Форекс';
-addExpenses = 'интернет, телевидение, коммуналка';
-deposit = true;
+addExpenses = prompt("Перечислите возможные расходы за рассчитываемый период через запятую");
+deposit = confirm("Есть ли у вас депозит в банке?");
 mission = 1234567;
 period = 7;
-
-console.log(typeof(money));
-console.log(typeof(income));
-console.log(typeof(deposit));
-
-console.log(addExpenses.length);
-
-console.log('Период равен %d месяцев',period);
-console.log('Цель заработать %d рублей',mission);
-
-console.log(addExpenses.toLowerCase().split(', '));
-
-let budgetDay = money/30;
-
-//lesson03
-
-money = +prompt("Ваш месячный доход?");
-addExpenses = prompt("Перечислите возможные расходы за рассчитываемый период через запятую");
-deposit = !!prompt("Есть ли у вас депозит в банке?");
 
 let expenses1 = prompt("Введите обязательную статью расходов?");
 let amount1 = +prompt("Во сколько это обойдется?");
 let expenses2 = prompt("Введите обязательную статью расходов?");
 let amount2 = +prompt("Во сколько это обойдется?");
 
-let budgetMonth = money-amount1-amount2;
-console.log("Бюджет на месяц "+ budgetMonth);
 
-console.log("Цель будет достигнута за: %d месяцев",Math.ceil(mission/budgetMonth));
 
-budgetDay = budgetMonth/30;
+//Functions
+const showTypeOf = function (data){
+    return typeof(data);
+};
+
+const getExpensesMonth = function ()  {
+    return amount1+amount2;
+};
+
+const getAccumulatedMonth = function ()  {
+    return money-getExpensesMonth();
+};
+
+const accumulatedMonth = getAccumulatedMonth();
+
+const getTargetMonth = function ()  {
+    return Math.ceil(mission/accumulatedMonth);
+};
+
+const getStatusIncome = function ()  {
+    return income !== 'underfined'; 
+};
+
+let budgetDay = accumulatedMonth/30;
+
+
+//console
+console.log(showTypeOf(money));
+console.log(showTypeOf(income));
+console.log(showTypeOf(deposit));
+
+console.log("Бюджет на месяц "+accumulatedMonth);
+
+console.log(addExpenses.toLowerCase().split(', '));
+
+console.log("Цель будет достигнута за: %d месяцев",getTargetMonth());
+
 console.log("Бюджет на день "+Math.floor(budgetDay));
 
+console.log("Есть ли дополнительный доход: "+getStatusIncome());
+
+
+//Budget
 if(budgetDay>=1200) {
 
     console.log("У вас высокий уровень дохода");
@@ -57,3 +77,8 @@ if(budgetDay>=1200) {
     console.log("Что то пошло не так");
     
 }
+
+
+
+
+
