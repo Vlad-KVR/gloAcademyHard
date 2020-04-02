@@ -1,32 +1,73 @@
-//1
 'use strict';
 
-let arr = [];
+const game = function() {
 
-for(let i = 0; i<7; i++){
-    arr[i] = Math.floor(Math.random()*10)+"234567";
-}
+    const guessedNumber = Math.floor(Math.random()*100);
+    let number = prompt("Угадайте число от 1 до 100");
+    let attempts = 10;
 
-for(let i = 0; i<arr.length; i++){
-    if(arr[i].charAt(0) === "2" || arr[i].charAt(0) === "4"){
-        console.log(arr[i]);
-    }
-}
+    //конец игры
+    const theEnd = () => { alert("Надеюсь вы получили удовольствие от игры :)"); };
 
-for(let i = 2; i<=100; i++){
+    // число ли?
+    const isNum = function(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+    };
 
-    let isPrimeNumber = true;
-    for(let j = 2; j<8; j++){
-        if(i%j===0) {
-            isPrimeNumber = false;
-            break;
+
+
+    const start = function f () {
+
+        //проверки
+        if(number === null){
+            theEnd();
+            return;
+        } else if(!isNum(number)){
+            number = prompt("Введи число!");
+            start(attempts);
+            return;
+        } else{
+            number = +number;
         }
-    }
 
-    if(isPrimeNumber || 
-        i === 2 || 
-        i === 3 ||
-        i === 5 ||
-        i === 7) console.log(i+" Делители этого числа: 1 и "+i);
 
-}
+        attempts--;
+        if(attempts===0){
+            if(confirm("Попытки закончились, хотите сыграть еще?")) {
+                game();
+                return;
+            } else{
+            theEnd();
+            return;
+            }
+        }
+        
+        
+        //действия
+        if(number<guessedNumber||number>guessedNumber){
+
+            let moreOrLess = number<guessedNumber ? "Загаданное число больше" :
+            "Загаданное число меньше";
+
+            number = prompt(moreOrLess+", осталось попыток "+attempts);
+            start();
+            
+        } else {
+
+            if(confirm("Поздравляю, Вы угадали!!! Хотели бы сыграть еще?")){
+                game();
+            }else{
+                theEnd();
+            }
+            
+        }
+
+    };
+
+
+
+
+    return start();
+};
+
+game();
