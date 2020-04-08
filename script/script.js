@@ -1,6 +1,31 @@
 'use strict';
 
 
+let calculationStart = document.getElementById("start");
+let btnPlus = document.querySelectorAll("button>.btn_plus");
+let btnPlusFirst = btnPlus[0],
+    btnPlusSecond = btnPlus[1];
+let depositCheck = document.querySelector("#deposit-check");
+let additionalIncomeItem = document.querySelectorAll(".additional_income-item");
+let budgetMonthValue = document.querySelector(".budget_month-value");
+let budgetDayValue = document.querySelector(".budget_day-value");
+let expensesMonthValue = document.querySelector(".expenses_month-value");
+let incomeValue = document.querySelector(".additional_income-value");
+let expensesValue = document.querySelector(".additional_expenses-value");
+let periodValue = document.querySelector(".income_period-value");
+let monthValue = document.querySelector(".target_month-value");
+let salaryAmount = document.querySelector(".salary-amount");
+let incomeTitle = document.querySelector('.income-title');
+let incomeAmount = document.querySelector(".income-amount");
+let expensesTitle = document.querySelector(".expenses-title");
+let expensesAmount = document.querySelector(".expenses-amount");
+let additionalExpensesItem = document.querySelector(".additional_expenses-item");
+let targetAmount = document.querySelector(".target-amount");
+let periodSelect = document.querySelector(".period-select");
+
+
+
+/*
 
 //data
 let money;
@@ -171,29 +196,4 @@ let start = function() {
 
 start();
 
-
-
-
-
-// expensesAmount = appData.getExpensesMonth();
-
-// accumulatedMonth = appData.getAccumulatedMonth();
-
-
-
-// const targetMonth = appData.getTargetMonth();
-
-// appData.budgetDay = accumulatedMonth/30;
-
-
-//console
-
-
-
-
-
-
-
-
-
-
+*/
