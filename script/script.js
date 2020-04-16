@@ -25,7 +25,7 @@ let periodSelect = document.querySelector(".period-select");
 
 
 
-/*
+
 
 //data
 let money;
@@ -149,51 +149,48 @@ let appData = {
     },
     calcSaveMoney: function(){
         return appData.budgetMonth * appData.period;
-    }
-}
+    },
 
 
-let start = function() {
+    start: function() {
 
-    //asking and get data
-    do{
-        money = prompt("Ваш месячный доход?","42500");
-
-    } while(!isNumber(money));
-
+        //asking and get data
+        do{
+            money = prompt("Ваш месячный доход?","42500");
     
-    appData.asking();
-
-    //console data
-    let dataObject = "Наша программа включает в себя данные:"+"\n";
-    for(let key in appData){
-        dataObject+= key+" : "+appData[key]+"\n"; 
-    }
-    console.log(dataObject);
-    console.log("Расходы за месяц "+appData.getExpensesMonth());
-
-    //Possible expenses
-    let possibleExpenses = appData.addExpenses[0].substring(0,1).toUpperCase()+appData.addExpenses[0].substring(1);
-    for(let i = 1; i<appData.addExpenses.length;i++){
-        let str = appData.addExpenses[i];
-        possibleExpenses+= ", "+str.substring(0,1).toUpperCase()+str.substring(1);
-    }
-    console.log(possibleExpenses);
-
-    if(appData.period>0){
-        console.log("Цель будет достигнута за: %d месяцев",appData.period);
-    } else{
-        console.log("Цель не будет достигнута");
-    }
-
-    console.log("Бюджет на день "+Math.floor(appData.budgetDay));
-
-    console.log(appData.status);
-
-
+        } while(!isNumber(money));
+    
+        
+        appData.asking();
+    
+        //console data
+        let dataObject = "Наша программа включает в себя данные:"+"\n";
+        for(let key in appData){
+            dataObject+= key+" : "+appData[key]+"\n"; 
+        }
+        console.log(dataObject);
+        console.log("Расходы за месяц "+appData.getExpensesMonth());
+    
+        //Possible expenses
+        let possibleExpenses = appData.addExpenses[0].substring(0,1).toUpperCase()+appData.addExpenses[0].substring(1);
+        for(let i = 1; i<appData.addExpenses.length;i++){
+            let str = appData.addExpenses[i];
+            possibleExpenses+= ", "+str.substring(0,1).toUpperCase()+str.substring(1);
+        }
+        console.log(possibleExpenses);
+    
+        if(appData.period>0){
+            console.log("Цель будет достигнута за: %d месяцев",appData.period);
+        } else{
+            console.log("Цель не будет достигнута");
+        }
+    
+        console.log("Бюджет на день "+Math.floor(appData.budgetDay));
+    
+        console.log(appData.status);
+    
+    
+    },
 };
 
-
-start();
-
-*/
+calculationStart.addEventListener("click", appData.start());
