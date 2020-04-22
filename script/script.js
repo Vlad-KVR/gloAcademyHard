@@ -4,10 +4,17 @@
 let start = document.getElementById("start");
 let cancel = document.getElementById("cancel");
 
+
 const toBlockStart = function() {
     start.setAttribute('disabled','true');
 };
 toBlockStart();
+
+let isNumber = function(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+
 
 
 
@@ -33,17 +40,6 @@ let targetAmount = document.querySelector(".target-amount");
 let periodSelect = document.querySelector(".period-select");
 let incomeItems = document.querySelectorAll('.income-items');
 let periodAmount = document.querySelector(".period-amount");
-
-
-
-
-//data
-let money;
-
-//isNumber?
-let isNumber = function(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-};
 
 
 
