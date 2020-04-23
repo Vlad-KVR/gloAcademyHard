@@ -96,7 +96,6 @@ class AppData {
     }
     
     getInfoDeposit() {
-        
         if(this.deposit){
             this.percentDeposit = depositPercent.value;
             this.moneyDeposit = depositAmount.value;
@@ -115,7 +114,7 @@ class AppData {
     }
     
     getIncome() {
-        const that = this
+        const that = this;
         incomeItems.forEach(function(item){
             const itemIncome = item.querySelector('.income-title').value;
             const cashIncome = item.querySelector('.income-amount').value;
@@ -162,7 +161,18 @@ class AppData {
     
     start() {
         
-        
+        if((depositBank.value === '' && this.deposit)){
+            alert('Выберите банк!(или снимите галочку с "Депозит")');
+            return;
+        } else if(!AppData.isNumber(depositAmount.value)){
+            alert('Введите корректную сумму по депозиту');
+            return;
+        } else if(!AppData.isNumber(depositPercent.value)||depositPercent.value<0||
+        depositPercent.value>100){
+            alert("Введите корректное значение в поле проценты!");
+            return;
+        }
+
         start.style.display = 'none';
         cancel.style.display = 'inline-block';
     
@@ -265,9 +275,10 @@ class AppData {
     changePercent() {
         const valueSelect = this.value;
         if (valueSelect === 'other'){
-            console.log(valueSelect);
-            //homework
+            depositPercent.value = '';
+            depositPercent.style.display = 'inline-block';
         } else {
+            depositPercent.style.display = '';
             depositPercent.value = valueSelect;
         }
     }
