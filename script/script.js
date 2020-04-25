@@ -297,4 +297,41 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	slider();
 
+
+	// смена картинок "Наша команда"
+	const changeImg = () => {
+		const commandPhoto = document.querySelectorAll('.command__photo');
+
+		const setNewImg = item => {
+			const newDataImg = item.src;
+			item.src = item.dataset.img;
+			item.dataset.img = newDataImg;
+		};
+
+		commandPhoto.forEach(item => {
+			item.addEventListener('mouseover', () => { setNewImg(item); });
+			item.addEventListener('mouseout', () => { setNewImg(item); });
+		});
+
+
+
+	};
+
+	changeImg();
+
+
+	//Ввод только цифр в калькуляторе
+	const calculator = () => {
+
+		const inputOnlyNumber = document.querySelectorAll('.calc-item[type=number]');
+		
+		inputOnlyNumber.forEach(item => {
+			item.addEventListener('input', () => { 
+				item.value = item.value.replace(/\D/g, ''); 
+			});
+		});
+
+	};
+
+	calculator();
 });
