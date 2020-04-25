@@ -1,3 +1,6 @@
+/* eslint-disable no-loop-func */
+/* eslint-disable no-unmodified-loop-condition */
+/* eslint-disable prefer-const */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable no-empty */
@@ -31,8 +34,8 @@ window.addEventListener('DOMContentLoaded', () => {
 			if (timer.timeRemaining <= 0) {
 				clearInterval(idInterval);
 				timerHours.textContent = '00';
-			    timerMinutes.textContent = '00';
-			    timerSeconds.textContent = '00';
+				timerMinutes.textContent = '00';
+				timerSeconds.textContent = '00';
 				return;
 			}
 
@@ -45,72 +48,143 @@ window.addEventListener('DOMContentLoaded', () => {
 			timerSeconds.textContent = timer.seconds.toString().length > 1 ?
 				timer.seconds :
 				'0' + timer.seconds;
-			
+
 		};
 
 		idInterval = setInterval(updateClock, 1000);
-        
+
 	};
 
 	countTimer('28 april 2020');
 
 
-	//Меню 
+	//Меню
 	const toggleMenu = () => {
 
 		const btnMenu = document.querySelector('.menu'),
-			menu = document.querySelector('menu'),
-			closeBtn = document.querySelector('.close-btn'),
-			menuItems = menu.querySelectorAll('ul>li');
+			menu = document.querySelector('menu');
 
 		const handlerMenu = () => {
 			menu.classList.toggle('active-menu');
 		};
-		btnMenu.addEventListener('click', handlerMenu);
-		closeBtn.addEventListener('click', handlerMenu);
-		menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
 
+		btnMenu.addEventListener('click', handlerMenu);
+		menu.addEventListener('click', () => {
+			let target = event.target;
+
+			if (!target.classList.contains('close-btn')) {
+				target = target.closest('li');
+			}
+
+			if (target) handlerMenu();
+		});
 	};
 
 	toggleMenu();
 
-	
-	//popup
 
-	const togglePopup = () => {
-		const popup = document.querySelector('.popup'),
-			popupBtn = document.querySelectorAll('.popup-btn'),
-			popupClose = document.querySelector('.popup-close');
+	//popUp
+	const togglePopUp = () => {
+		const popUp = document.querySelector('.popup'),
+			popUpBtn = document.querySelectorAll('.popup-btn');
 
-		const animationPopup = () => {
+		const animationPopUp = () => {
+
 			if (window.innerWidth < 768) {
-				popup.style.display = 'block';
+				popUp.style.display = popUp.style.display === 'block' ? '' : 'block';
 				return;
 			}
-			popup.children[0].style.marginLeft = '100%';
-			popup.style.marginLeft = '-100%';
-			popup.style.display = 'block';
+
+			let number = popUp.style.display === 'block' ? '2%' : '-100%';
+			popUp.children[0].style.marginLeft = number;
+			popUp.style.marginLeft = number;
+			popUp.style.display = 'block';
+
 			const idInterval = setInterval(() => {
-				if (popup.style.marginLeft === '0%') {
-					popup.style.marginLeft = '0%';
-					popup.children[0].style.marginLeft = '0%';
+
+				if (popUp.style.marginLeft === '0%' ||
+					popUp.style.marginLeft === '100%') {
+
+					popUp.style.marginLeft = '0%';
+					popUp.children[0].style.marginLeft = '0%';
 					clearInterval(idInterval);
 					return;
+
 				}
-				const number = Number.parseInt(popup.style.marginLeft) + 2;
-				popup.children[0].style.marginLeft = number + '%';
-				popup.style.marginLeft = number + '%';
-			}, 1);
+
+				number = Number.parseInt(popUp.style.marginLeft) + 2;
+				popUp.children[0].style.marginLeft = number + '%';
+				popUp.style.marginLeft = number + '%';
+
+			}, 10);
+
 		};
 
-		popupBtn.forEach(elem => {
-			elem.addEventListener('click', animationPopup);
+		popUpBtn.forEach(elem => {
+			elem.addEventListener('click', animationPopUp);
 		});
 
-		popupClose.addEventListener('click', () => {
-			popup.style.display = '';
+		// popUpClose.addEventListener('click', () => {
+		// 	animationPopUp();
+		// 	setTimeout(() => { popUp.style.display = ''; }, 1000);
+		// });
+
+		popUp.addEventListener('click', event => {
+			let target = event.target;
+
+			if (target.classList.contains('popup-close')) {
+				target = null;
+			} else {
+				target = target.closest('.popup-content');
+			}
+
+			if (!target) {
+				animationPopUp();
+				setTimeout(() => { popUp.style.display = ''; }, 500);
+			}
+
 		});
 
 	};
-	togglePopup();
+
+	togglePopUp();
+
+
+	//Табы
+	const tabs = () => {
+		const tabHeader = document.querySelector('.service-header'),
+			tabs = tabHeader.querySelectorAll('.service-header-tab'),
+			tabContents = document.querySelectorAll('.service-tab');
+
+		const toggleTabContent = index => {
+			for (let i = 0; i < tabContents.length; i++) {
+				if (index === i) {
+					tabs[i].classList.add('active');
+					tabContents[i].classList.remove('d-none');
+				} else {
+					tabs[i].classList.remove('active');
+					tabContents[i].classList.add('d-none');
+				}
+			}
+		};
+
+		tabHeader.addEventListener('click', event => {
+			let target = event.target;
+			target = target.closest('.service-header-tab');
+
+
+			if (target) {
+				tabs.forEach((item, i) => {
+					if (item === target) {
+						toggleTabContent(i);
+					}
+
+				});
+
+			}
+
+		});
+	};
+
+	tabs();
 });
