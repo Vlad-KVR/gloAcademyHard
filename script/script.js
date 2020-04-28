@@ -350,7 +350,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 				if ((total + onePercent + 1) > totalText &&
 				(total - onePercent - 1) < totalText) {
-					totalValue.textContent = total;
+					totalValue.textContent = Math.round(total);
 					clearInterval(idInterval);
 					return;
 				}
