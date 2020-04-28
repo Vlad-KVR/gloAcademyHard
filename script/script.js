@@ -338,6 +338,28 @@ window.addEventListener('DOMContentLoaded', () => {
 			});
 		});
 
+		
+		const countSumAnimation = total => {
+			let totalText  = +totalValue.textContent;
+			const onePercent = total > totalText ? total / 100 : totalText / 100;
+			const idInterval = setInterval(() => {
+				
+				totalText = totalText < total ? totalText + onePercent : totalText - onePercent;
+
+				totalValue.textContent = Math.floor(totalText);
+
+				if ((total + onePercent + 1) > totalText &&
+				(total - onePercent - 1) < totalText) {
+					totalValue.textContent = Math.round(total);
+					clearInterval(idInterval);
+					return;
+				}
+
+			}, 10);
+
+			
+		};
+
 		const countSum = () => {
 			let total = 0,
 				countValue = 1,
@@ -361,8 +383,10 @@ window.addEventListener('DOMContentLoaded', () => {
 			}
 
 
-			totalValue.textContent = total;
+			if (typeValue && squareValue || +totalValue.textContent > 0) countSumAnimation(total);
 		};
+
+		
 
 		calcBlock.addEventListener('change', event => {
 			const target = event.target;
