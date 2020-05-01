@@ -55,7 +55,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	};
 
-	countTimer('1 may 2020');
+	countTimer('9 may 2020');
 
 
 	//Меню
