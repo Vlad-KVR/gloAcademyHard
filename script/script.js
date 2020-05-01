@@ -436,7 +436,8 @@ window.addEventListener('DOMContentLoaded', () => {
 		statusMessage.textContent = 'Тут будет сообщение!';
 		statusMessage.style.cssText = 'font-size: 2rem; color: white;';
 
-		const postData = (body, outputData, errorData) => {
+		const postData = body => new Promise((resolve, reject) => {
+
 			const request = new XMLHttpRequest();
 			request.addEventListener('readystatechange', () => {
 				console.log(request.readyState);
@@ -445,20 +446,21 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 
 				if (request.status === 200) {
-					outputData();
+					resolve();
 				} else {
-					errorData(request.status);
+					reject(request.status);
 				}
-				
-				
+					
+					
 			});
 
 			request.open('POST', './server.php');
 			request.setRequestHeader('Content-Type', 'application/json');
-			
+				
 
 			request.send(JSON.stringify(body));
-		};
+
+		});
 
 		[...forms].forEach(form => {
 
@@ -475,12 +477,12 @@ window.addEventListener('DOMContentLoaded', () => {
 					body[key] = val;
 				});
 
-				postData(body, () => {
-					statusMessage.textContent = successMessage;
-				}, error => {
-					console.log(error);
-					statusMessage.textContent = errorMessage;
-				});
+				postData(body)
+					.then(() => statusMessage.textContent = successMessage)
+					.catch(error => {
+						console.log(error);
+						statusMessage.textContent = errorMessage;
+					});
 
 				[...form.elements].forEach(elem => {
 					if (elem.tagName.toLowerCase() === 'input') {
