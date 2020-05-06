@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable no-loop-func */
 /* eslint-disable no-unmodified-loop-condition */
 /* eslint-disable prefer-const */
@@ -436,31 +437,13 @@ window.addEventListener('DOMContentLoaded', () => {
 		statusMessage.textContent = 'Тут будет сообщение!';
 		statusMessage.style.cssText = 'font-size: 2rem; color: white;';
 
-		const postData = body => new Promise((resolve, reject) => {
-
-			const request = new XMLHttpRequest();
-			request.addEventListener('readystatechange', () => {
-				console.log(request.readyState);
-				if (request.readyState !== 4) {
-					return;
-				}
-
-				if (request.status === 200) {
-					resolve();
-				} else {
-					reject(request.status);
-				}
-					
-					
+		const postData = formData => fetch('./server.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: formData
 			});
-
-			request.open('POST', './server.php');
-			request.setRequestHeader('Content-Type', 'application/json');
-				
-
-			request.send(JSON.stringify(body));
-
-		});
 
 		[...forms].forEach(form => {
 
@@ -471,14 +454,19 @@ window.addEventListener('DOMContentLoaded', () => {
 				statusMessage.textContent = loadMessage;
 				
 				const formData = new FormData(form);
-				let body = {};
+				// let body = {};
 
-				formData.forEach((val, key) => {
-					body[key] = val;
-				});
+				// formData.forEach((val, key) => {
+				// 	body[key] = val;
+				// });
 
-				postData(body)
-					.then(() => statusMessage.textContent = successMessage)
+				postData(formData)
+					.then(response => {
+						if (response.status !== 200) {
+							throw new Error("status response not 200");
+                        }
+						statusMessage.textContent = successMessage;
+					})
 					.catch(error => {
 						console.log(error);
 						statusMessage.textContent = errorMessage;
