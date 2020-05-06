@@ -1,403 +1,69 @@
-/* eslint-disable no-loop-func */
-/* eslint-disable no-unmodified-loop-condition */
-/* eslint-disable prefer-const */
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-concat */
 /* eslint-disable no-trailing-spaces */
-/* eslint-disable no-empty */
-
+/* eslint-disable no-unused-vars */
 'use strict';
-window.addEventListener('DOMContentLoaded', () => {
+
+const API_KEY = "trnsl.1.1.20200506T115836Z.72341e10df2043fd.d1156e0c2408992f3085bed9e835e049e67e48c1";
+const url = "https://translate.yandex.net/api/v1.5/tr.json/translate";
 
 
-	//Таймер
-	const countTimer = deadline => {
-		const timerHours = document.querySelector('#timer-hours'),
-			timerMinutes = document.querySelector('#timer-minutes'),
-			timerSeconds = document.querySelector('#timer-seconds');
+const getData = url => {
+	return fetch(url);
+};
 
+//переключение языков
 
+const toggleLanguage = () => {
 
-		const getTimeRemaining = () => {
-			const dateStop = new Date(deadline),
-				dateNow = new Date().getTime(),
-				timeRemaining = (dateStop - dateNow) / 1000,
-				seconds = Math.floor(timeRemaining % 60),
-				minutes = Math.floor((timeRemaining / 60) % 60),
-				hours = Math.floor(timeRemaining / 60 / 60);
-			return { timeRemaining, hours, minutes, seconds };
-		};
+	const buttonToggle = document.querySelector('.arrow');
 
-		// eslint-disable-next-line prefer-const
-		let idInterval;
-		const updateClock = () => {
-			const timer = getTimeRemaining();
-			if (timer.timeRemaining <= 0) {
-				clearInterval(idInterval);
-				timerHours.textContent = '00';
-				timerMinutes.textContent = '00';
-				timerSeconds.textContent = '00';
-				return;
-			}
+	const toggle = () => {
+		const languages = document.querySelectorAll('.language > h1');
+		const first = languages[0].textContent;
+		const second = languages[1].textContent;
 
-			timerHours.textContent = timer.hours.toString().length > 1 ?
-				timer.hours :
-				'0' + timer.hours;
-			timerMinutes.textContent = timer.minutes.toString().length > 1 ?
-				timer.minutes :
-				'0' + timer.minutes;
-			timerSeconds.textContent = timer.seconds.toString().length > 1 ?
-				timer.seconds :
-				'0' + timer.seconds;
+		languages.forEach(item =>{
+			item.parentNode.classList.toggle('ru');
+			item.parentNode.classList.toggle('en');
+		});
 
-		};
-
-		idInterval = setInterval(updateClock, 1000);
-
+		languages[0].textContent = second;
+		languages[1].textContent = first;
 	};
 
-	countTimer('28 april 2020');
+	buttonToggle.addEventListener('click', toggle);
+};
 
+toggleLanguage();
 
-	//Меню
-	const toggleMenu = () => {
 
-		const btnMenu = document.querySelector('.menu'),
-			menu = document.querySelector('menu');
+const translate = () => {
 
-		const handlerMenu = () => {
-			menu.classList.toggle('active-menu');
-		};
+	const form = document.querySelector('form');
 
-		btnMenu.addEventListener('click', handlerMenu);
-		menu.addEventListener('click', () => {
-			let target = event.target;
+	const textFrom = document.getElementById('from');
 
-			if (!target.classList.contains('close-btn')) {
-				target = target.closest('li');
-			}
+	const textTo = document.getElementById('to');
 
-			if (target) handlerMenu();
-		});
-	};
+	const lang = document.querySelector('.language').classList.contains('ru') ? "ru-en" : "en-ru";
 
-	toggleMenu();
 
 
-	//popUp
-	const togglePopUp = () => {
-		const popUp = document.querySelector('.popup'),
-			popUpBtn = document.querySelectorAll('.popup-btn');
-
-		const animationPopUp = () => {
-
-			if (window.innerWidth < 768) {
-				popUp.style.display = popUp.style.display === 'block' ? '' : 'block';
-				return;
-			}
-
-			let number = popUp.style.display === 'block' ? '2%' : '-100%';
-			popUp.children[0].style.marginLeft = number;
-			popUp.style.marginLeft = number;
-			popUp.style.display = 'block';
-
-			const idInterval = setInterval(() => {
-
-				if (popUp.style.marginLeft === '0%' ||
-					popUp.style.marginLeft === '100%') {
-
-					popUp.style.marginLeft = '0%';
-					popUp.children[0].style.marginLeft = '0%';
-					clearInterval(idInterval);
-					return;
-
-				}
-
-				number = Number.parseInt(popUp.style.marginLeft) + 2;
-				popUp.children[0].style.marginLeft = number + '%';
-				popUp.style.marginLeft = number + '%';
-
-			}, 10);
-
-		};
-
-		popUpBtn.forEach(elem => {
-			elem.addEventListener('click', animationPopUp);
-		});
-
-		// popUpClose.addEventListener('click', () => {
-		// 	animationPopUp();
-		// 	setTimeout(() => { popUp.style.display = ''; }, 1000);
-		// });
-
-		popUp.addEventListener('click', event => {
-			let target = event.target;
-
-			if (target.classList.contains('popup-close')) {
-				target = null;
-			} else {
-				target = target.closest('.popup-content');
-			}
-
-			if (!target) {
-				animationPopUp();
-				setTimeout(() => { popUp.style.display = ''; }, 500);
-			}
-
-		});
-
-	};
-
-	togglePopUp();
-
-
-	//Табы
-	const tabs = () => {
-		const tabHeader = document.querySelector('.service-header'),
-			tabs = tabHeader.querySelectorAll('.service-header-tab'),
-			tabContents = document.querySelectorAll('.service-tab');
-
-		const toggleTabContent = index => {
-			for (let i = 0; i < tabContents.length; i++) {
-				if (index === i) {
-					tabs[i].classList.add('active');
-					tabContents[i].classList.remove('d-none');
-				} else {
-					tabs[i].classList.remove('active');
-					tabContents[i].classList.add('d-none');
-				}
-			}
-		};
-
-		tabHeader.addEventListener('click', event => {
-			let target = event.target;
-			target = target.closest('.service-header-tab');
-
-
-			if (target) {
-				tabs.forEach((item, i) => {
-					if (item === target) {
-						toggleTabContent(i);
-					}
-
-				});
-
-			}
-
-		});
-	};
-
-	tabs();
-
-
-	//слайдер
-	const slider = () => {
-		const slide = document.querySelectorAll('.portfolio-item'),
-			slider = document.querySelector('.portfolio-content');
-
-		//добавление точек
-		const addDot = () => {
-			for (let i = 0; i < slide.length; i++) {
-				const newDot = document.createElement('li');
-				newDot.classList.add('dot');
-				if (i === 0) {
-					newDot.classList.add('dot-active');
-				}
-				document.querySelector('.portfolio-dots').appendChild(newDot);
-			}
-		};
-
-		addDot();
-		const dot = document.querySelectorAll('.dot');
-
-
-
-		let currentSlide = 0,
-			interval;
-
-		const prevSlide = (elem, index, strClass) => {
-			elem[index].classList.remove(strClass);
-		};
-
-		const nextSlide = (elem, index, strClass) => {
-			elem[index].classList.add(strClass);
-		};
-
-		const autoPlaySlide = () => {
-
-			prevSlide(slide, currentSlide, 'portfolio-item-active');
-			prevSlide(dot, currentSlide, 'dot-active');
-			currentSlide++;
-			if (currentSlide >= slide.length) currentSlide = 0;
-			nextSlide(slide, currentSlide, 'portfolio-item-active');
-			nextSlide(dot, currentSlide, 'dot-active');
-
-		};
-
-		const startSlide = (time = 3000) => {
-
-			interval = setInterval(autoPlaySlide, time);
-
-		};
-
-		const stopSlide = () => {
-			clearInterval(interval);
-		};
-
-		slider.addEventListener('click', event => {
-
-			event.preventDefault();
-
-			const target = event.target;
-
-			if (!target.matches('.portfolio-btn, .dot')) {
-				return;
-			}
-
-			prevSlide(slide, currentSlide, 'portfolio-item-active');
-			prevSlide(dot, currentSlide, 'dot-active');
-
-			if (target.matches('#arrow-right')) {
-				currentSlide = currentSlide >= slide.length - 1 ? 0 : currentSlide + 1;
-			} else if (target.matches('#arrow-left')) {
-				currentSlide = currentSlide <= 0 ? slide.length - 1 : currentSlide - 1;
-			} else if (target.matches('.dot')) {
-				dot.forEach((elem, index) => {
-					if (elem === target) {
-						currentSlide = index;
-					}
-				});
-			}
-
-
-			nextSlide(slide, currentSlide, 'portfolio-item-active');
-			nextSlide(dot, currentSlide, 'dot-active');
-
-		});
-
-		slider.addEventListener('mouseover', event => {
-			if (event.target.matches('.portfolio-btn') ||
-				event.target.matches('.dot')) {
-
-				stopSlide();
-			}
-		});
-
-		slider.addEventListener('mouseout', event => {
-			if (event.target.matches('.portfolio-btn') ||
-				event.target.matches('.dot')) {
-
-				startSlide();
-			}
-		});
-
-		startSlide(1500);
-
-
-	};
-
-	slider();
-
-
-	// смена картинок "Наша команда"
-	const changeImg = () => {
-		const commandPhoto = document.querySelectorAll('.command__photo');
-
-		const setNewImg = item => {
-			const newDataImg = item.src;
-			item.src = item.dataset.img;
-			item.dataset.img = newDataImg;
-		};
-
-		commandPhoto.forEach(item => {
-			item.addEventListener('mouseover', () => { setNewImg(item); });
-			item.addEventListener('mouseout', () => { setNewImg(item); });
-		});
-
-
-
-	};
-
-	changeImg();
-
-
-	//калькулятор
-	const calculator = (price = 100) => {
-
-		const inputOnlyNumber = document.querySelectorAll('.calc-item[type=number]'),
-			calcBlock = document.querySelector('.calc-block'),
-			calcType = document.querySelector('.calc-type'),
-			calcSquare = document.querySelector('.calc-square'),
-			calcDay = document.querySelector('.calc-day'),
-			calcCount = document.querySelector('.calc-count'),
-			totalValue = document.getElementById('total');
+	form.addEventListener('submit', event => {
+		event.preventDefault();
 		
-		
-		inputOnlyNumber.forEach(item => {
-			item.addEventListener('input', () => { 
-				item.value = item.value.replace(/\D/g, ''); 
+		getData(encodeURI(url + 
+			"?" + "key=" + API_KEY +
+			"&" + "text=" + textFrom.value +
+			"&" + "lang=" + lang))
+			.then(response => {
+				return response.json();
+			})
+			.then(response => {
+				textTo.value = response.text;
 			});
-		});
-
 		
-		const countSumAnimation = total => {
-			let totalText  = +totalValue.textContent;
-			const onePercent = total > totalText ? total / 100 : totalText / 100;
-			const idInterval = setInterval(() => {
-				
-				totalText = totalText < total ? totalText + onePercent : totalText - onePercent;
+	});
+};
 
-				totalValue.textContent = Math.floor(totalText);
-
-				if ((total + onePercent + 1) > totalText &&
-				(total - onePercent - 1) < totalText) {
-					totalValue.textContent = Math.round(total);
-					clearInterval(idInterval);
-					return;
-				}
-
-			}, 10);
-
-			
-		};
-
-		const countSum = () => {
-			let total = 0,
-				countValue = 1,
-				dayValue = 1;
-			const typeValue = calcType.options[calcType.selectedIndex].value,
-				squareValue = +calcSquare.value;
-
-				
-			if (calcCount.value > 1) {
-				countValue += (calcCount.value - 1) / 10;
-			}
-
-			if (calcDay.value && calcDay.value < 5) {
-				dayValue *= 2;
-			} else if (calcDay.value && calcDay.value < 10) {
-				dayValue *= 1.5;
-			}
-			
-			if (typeValue && squareValue) {
-				total = price * typeValue * squareValue * countValue * dayValue;
-			}
-
-
-			if (typeValue && squareValue || +totalValue.textContent > 0) countSumAnimation(total);
-		};
-
-		
-
-		calcBlock.addEventListener('change', event => {
-			const target = event.target;
-
-			if (target.matches('select') || target.matches('input')) {
-				countSum();
-			}
-
-		});
-
-	};
-
-	calculator(100);
-});
+translate();
