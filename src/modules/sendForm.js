@@ -1,3 +1,4 @@
+'use strict';
 const sendForm = () => {
     const errorMessage = 'Что то пошло не так...',
         loadMessage = 'Загрузка...',
@@ -9,12 +10,12 @@ const sendForm = () => {
     statusMessage.textContent = 'Тут будет сообщение!';
     statusMessage.style.cssText = 'font-size: 2rem; color: white;';
 
-    const postData = formData => fetch('../../css/server.php', {
+    const postData = formData => fetch('../server.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: formData
+            body: JSON.stringify(formData)
         });
 
     [...forms].forEach(form => {
@@ -26,13 +27,13 @@ const sendForm = () => {
             statusMessage.textContent = loadMessage;
             
             const formData = new FormData(form);
-            // let body = {};
+            let body = {};
 
-            // formData.forEach((val, key) => {
-            // 	body[key] = val;
-            // });
+            formData.forEach((val, key) => {
+            	body[key] = val;
+            });
 
-            postData(formData)
+            postData(body)
                 .then(response => {
                     if (response.status !== 200) {
                         throw new Error("status response not 200");

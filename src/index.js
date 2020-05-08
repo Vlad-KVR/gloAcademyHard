@@ -3,6 +3,10 @@
 import "@babel/polyfill";
 import 'nodelist-foreach-polyfill';
 import elementClosest from 'element-closest';
+import "formdata-polyfill";
+import "es6-promise";
+import "fetch-polyfill";
+
 elementClosest(window);  
 
 import countTimer from './modules/countTimer';
